@@ -67,7 +67,7 @@ function onListening() {
 var fs = require('fs');
 var https = require('https');
 var port = normalizePort(process.env.PORT || '8080');
-var https_port    =   process.env.PORT_HTTPS || 3000;
+var https_port    =   process.env.PORT_HTTPS || 8443;
 var options = {}
 
 if(process.env.ENV !== "DEV") {
@@ -99,7 +99,7 @@ if(process.env.ENV !== "DEV") {
   /*
   ° Create HTTPS server.
   */
-  var server = https.createServer(options, app).listen(https_port, function () {
+  var server = https.createServer(options, app).listen(https_port, "0.0.0.0", function () {
   console.log('Magic happens on port ' + https_port);
   });
 
