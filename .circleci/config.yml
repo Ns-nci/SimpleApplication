@@ -2,13 +2,15 @@ version: 2.1
 
 workflows:
   version: 2
-  build:
+  build_and_deploy:
     jobs:
       - build:
+      - deploy:
+          requires:
+            - build
           filters:
             branches:
-              only:
-                - main
+              only: main
 
 
 
@@ -17,7 +19,7 @@ jobs:
   build:
     working_directory: ~/SimpleApplication
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:18.0
     steps:
       - checkout
       - run: 
@@ -37,9 +39,16 @@ jobs:
             - ./node_modulees
   deploy:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:18.0
     steps:
-      - run:
+    - checkout
+    
+    - run:
           name: deploy-application
-          command:  ssh -i "simpleapp-key.pem" ubuntu@ec2-100-31-135-43.compute-1.amazonaws.com;git clone https://github.com/Ns-nci/SimpleApplication.git; source SimpleApplication/deploy.sh"
+          command:  ssh -i "simpleapp-key.pem" ubuntu@ec2-100-31-135-43.compute-1.amazonaws.com "
+            cd SimpleApplication &&
+            git pull origin main &&
+            npm install &&
+            pm2 restart all
+            "
     
