@@ -15,17 +15,19 @@ jobs:
       - run:
           name: Run basic check
           command: node -v
-
+          
   deploy:
     machine: true
 
     steps:
       - checkout
 
+      - add_ssh_keys
+
       - run:
           name: Deploy to EC2
           command: |
-           ssh -i "simpleapp-key.pem" ubuntu@ec2-100-31-135-43.compute-1.amazonaws.com << 'EOF'
+            ssh -o StrictHostKeyChecking=no ubuntu@ec2-100-31-135-43. compute-1.amazonaws.com << 'EOF'
               cd ~/SimpleApplication
               git pull origin main
               npm install
