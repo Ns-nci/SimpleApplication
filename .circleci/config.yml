@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Deploy to EC2
           command: |
-            ssh -o StrictHostKeyChecking=no ubuntu@ec2-100-31-135-43.compute-1.amazonaws.com "cd ~/SimpleApplication && git pull origin main && npm install && pm2 restart all || pm2 start npm --name mathapp -- start"
+            ssh -i "simpleapp-key.pem" ubuntu@ec2-98-92-70-86.compute-1.amazonaws.com "cd ~/SimpleApplication && git pull origin main && npm install && pm2 restart all || pm2 start npm --name mathapp -- start"
 
 workflows:
   version: 2
